@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import Register from "./pages/Register.tsx";
 import Login from "./pages/Login.tsx";
+import Sub from "./pages/Sub.tsx";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
                       <Route path="/" element={<Home/>}/>
                       <Route path="/register" element={<Register/>}/>
                       <Route path="/login" element={<Login/>}/>
+                      <Route path="/sub" element={<Sub/>}/>
                   </Routes>
               </BrowserRouter>
           </Wrapper>
