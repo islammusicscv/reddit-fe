@@ -1,14 +1,15 @@
 import {SyntheticEvent, useState} from "react";
 import axios from "axios";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const[errorMessage, setErrorMessage] = useState("");
 
+    const navigate = useNavigate();
+
     const url = "http://localhost:3000/auth/login";
-    const [redirect, setRedirect] = useState(false);
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -24,11 +25,10 @@ const Login = () => {
             const res = await axios.post(url, data);
 
             if (res.status === 201) {
-                setRedirect(true);
                 //shranim si nekam JWT za kasnejšo uporabo
                 const token = res.data;
                 localStorage.setItem("jwt", token);
-
+                navigate('/');
             }
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
@@ -40,9 +40,6 @@ const Login = () => {
 
     }
 
-    if (redirect) {
-        return <Navigate to="/" />;
-    }
 
     return (
         <>

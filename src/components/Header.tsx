@@ -1,4 +1,33 @@
+import {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+    useEffect( () => {
+        const token = localStorage.getItem("jwt");
+        /**
+        ta token bi morali poslat na backend validirat in na podlagi rezultata
+        nazaj bi odločali ali je uporabnik prijavljen
+        * */
+        if (token) {
+            setIsLoggedIn(true);
+        }
+        else {
+            setIsLoggedIn(false);
+        }
+    },[]);
+
+    const navigate = useNavigate();
+    const logoutUser = (e:React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>  {
+        e.preventDefault();
+        localStorage.removeItem("jwt");
+        setIsLoggedIn(false);
+        navigate('/login');
+    }
+
+
     return (
         <>
             <header data-bs-theme="dark">
@@ -16,10 +45,18 @@ const Header = () => {
                             <div className="col-sm-4 offset-md-1 py-4">
                                 <h4>Contact</h4>
                                 <ul className="list-unstyled">
-                                    <li><a href="/" className="text-white">Home</a></li>
-                                    <li><a href="/login" className="text-white">Login</a></li>
-                                    <li><a href="/register" className="text-white">Register</a></li>
-                                    <li><a href="/sub" className="text-white">Sub Reddits</a></li>
+                                    {isLoggedIn ? (
+                                        <>
+                                            <li><a href="/" className="text-white">Home</a></li>
+                                            <li><a href="/sub" className="text-white">Sub Reddits</a></li>
+                                            <li><a href="#" onClick={logoutUser} className="text-white">Logout</a></li>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <li><a href="/login" className="text-white">Login</a></li>
+                                            <li><a href="/register" className="text-white">Register</a></li>
+                                        </>
+                                    )}
                                 </ul>
                             </div>
                         </div>

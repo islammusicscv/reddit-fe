@@ -37,6 +37,29 @@ const Sub = () => {
         navigate('/addSub');
     }
 
+    const removeSub = async (id:number) => {
+        const url = `http://localhost:3000/subs/${id}`;
+        try {
+            const res = await axios.delete(url, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+                }
+            });
+            if (res.status == 200) {
+                //brisanje uspešno
+                setSubs(subs.filter(sub => sub.id !== id));
+            }
+        } catch (e) {
+            //error message
+            setErrorMessage("Napaka pri brisanju");
+        }
+    }
+
+    const editSub = (id:number) => {
+        const url = `/editSub/${id}`;
+        navigate(url);
+    }
+
     return (
         <>
             <div className="container mt-5">
@@ -47,7 +70,7 @@ const Sub = () => {
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         {
                             subs.map((sub, i) => {
-                                return <SubCard key={i} data={sub}/>
+                                return <SubCard key={i} data={sub} onRemove={removeSub} editSub={editSub} />
                             })
                         }
                     </div>

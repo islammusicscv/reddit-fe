@@ -34,7 +34,7 @@ const SubAdd = () => {
         }
     }
     if (redirect) {
-        return <Navigate to="/" />;
+        return <Navigate to="/sub" />;
     }
     return (
         <>
